@@ -1,0 +1,10 @@
+.canvas {
+  flex: 1;
+  position: relative;
+  display: "inline-block";
+}
+
+.img {
+  object-fit: cover;
+  pointer-events: none;
+}
