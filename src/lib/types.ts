@@ -15,6 +15,8 @@ export type AnnotationType = {
   };
 };
 
+export type Tool = "rectangle" | "circle" | "select";
+
 //TODO: to use after refactor
 export interface AnnotationBase {
   id: number;

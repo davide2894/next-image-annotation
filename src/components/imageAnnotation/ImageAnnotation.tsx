@@ -1,11 +1,11 @@
 "use client";
 import { useState } from "react";
 import Canvas from "../canvas/Canvas";
-import Toolbar from "../toolbar/Toolbar";
 import styles from "./ImageAnnotation.module.css";
 import ImageUploadInput from "../imageUploadInput/ImageUploadInput";
 import { useDispatch } from "react-redux";
 import { enableDrawing } from "@/lib/store/features/canvas/CanvasSlice";
+import Toolbar from "../toolbar/Toolbar";
 
 function ImageAnnotation() {
   const [image, setImage] = useState<File | null>(null);
@@ -28,8 +28,8 @@ function ImageAnnotation() {
     <div className={styles.imageAnnotation}>
       {image ? (
         <>
-          <Canvas image={image} tool={tool} />
-          <Toolbar onToolButtonClick={onToolButtonClick} />
+          <Canvas image={image} />
+          <Toolbar />
         </>
       ) : (
         <ImageUploadInput handleImageUpload={handleImageUpload} />

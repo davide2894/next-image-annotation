@@ -1,10 +1,21 @@
+import { useDispatch } from "react-redux";
 import styles from "./Toolbar.module.css";
+import {
+  enableDrawing,
+  setTool,
+} from "@/lib/store/features/canvas/CanvasSlice";
+import { SELECT_TOOL } from "@/lib/constants";
 
-interface ToolbarProps {
-  onToolButtonClick: (tool: string) => void;
-}
+function Toolbar() {
+  const dispatch = useDispatch();
 
-function Toolbar({ onToolButtonClick }: ToolbarProps) {
+  function onToolButtonClick(toolToActivate: string) {
+    dispatch(setTool(toolToActivate));
+    if (toolToActivate !== SELECT_TOOL) {
+      dispatch(enableDrawing());
+    }
+  }
+
   return (
     <div className={styles.toolbar}>
       <button onClick={() => onToolButtonClick("rectangle")}>

@@ -11,7 +11,6 @@ import { disableDrawing } from "@/lib/store/features/canvas/CanvasSlice";
 
 interface CanvasProps {
   image: File;
-  tool: string;
 }
 
 type XCoordinate = number;
@@ -19,7 +18,8 @@ type YCoordinate = number;
 
 type CoordinatePoint = [XCoordinate, YCoordinate];
 
-function Canvas({ image, tool }: CanvasProps) {
+function Canvas({ image }: CanvasProps) {
+  // @TODO: put annotations in its own slice cause it's useful when updating single annotation based on id (copy from goalsSlice)
   const [annotations, setAnnotations] = useState<AnnotationType[]>([]);
   const [drawingAnnotation, setDrawingAnnotation] =
     useState<AnnotationType | null>(null);
@@ -32,15 +32,17 @@ function Canvas({ image, tool }: CanvasProps) {
     y: number;
   } | null>(null);
   const isDrawing = useAppSelector((state) => state.canvasReducer.isDrawing);
+  const tool = useAppSelector((state) => state.canvasReducer.tool);
   const dispatch = useDispatch();
 
   function onCanvasMouseDown(evt: React.MouseEvent<HTMLDivElement>) {
-    if ((isDrawing && tool === RECTANGLE) || tool === CIRCLE) {
+    // @TODO: omogeneizza tool value accross the app
+    if (isDrawing && (tool === RECTANGLE || tool === CIRCLE)) {
       const x = evt.nativeEvent.offsetX;
       const y = evt.nativeEvent.offsetY;
       const newAnnotation = {
         id: annotations.length + 1,
-        shapeType: tool === "rectangle" ? "rectangle" : "circle",
+        shapeType: tool === RECTANGLE ? RECTANGLE : CIRCLE,
         shapeData: {
           x: x / IMG.WIDTH,
           y: y / IMG.HEIGHT,

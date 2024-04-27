@@ -4,6 +4,7 @@ export const canvasSlice = createSlice({
   name: "canvasSlice",
   initialState: {
     isDrawing: false,
+    tool: "",
   },
   reducers: {
     enableDrawing: (state: { isDrawing: boolean }) => {
@@ -12,8 +13,11 @@ export const canvasSlice = createSlice({
     disableDrawing: (state: { isDrawing: boolean }) => {
       state.isDrawing = false;
     },
+    setTool: (state, action) => {
+      state.tool = action.payload;
+    },
   },
 });
 
-export const { enableDrawing, disableDrawing } = canvasSlice.actions;
+export const { enableDrawing, disableDrawing, setTool } = canvasSlice.actions;
 export default canvasSlice.reducer;

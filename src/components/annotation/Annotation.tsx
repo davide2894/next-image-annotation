@@ -1,5 +1,5 @@
 import { AnnotationType } from "@/lib/types";
-import { RECTANGLE } from "@/lib/constants";
+import { RECTANGLE, SELECT_TOOL } from "@/lib/constants";
 import Form from "../form/Form";
 import { useState } from "react";
 import Modal from "../modal/Modal";
@@ -13,15 +13,17 @@ interface AnnotationProps {
 
 function Annotation({ annotation }: AnnotationProps) {
   const [label, setLabel] = useState("");
+  const [isHover, setIsHover] = useState(false);
   const shouldShowForm = useAppSelector((state) => state.formReducer.show);
+  const tool = useAppSelector((state) => state.canvasReducer.tool);
   const dispatch = useDispatch();
   console.log({ annotation });
   const { x, y, width, height } = annotation.shapeData;
   let annotationStyle;
   let annotationBaseStyle = {
-    position: "absolute" as "absolute",
+    position: "absolute" as "absolute", //TODO: refactor cause it's ugly
     border: "2px solid blue",
-    backgroundColor: "blue",
+    backgroundColor: `${isHover ? "yellow" : "blue"}`,
     opacity: 0.2,
   };
 
@@ -62,7 +64,18 @@ function Annotation({ annotation }: AnnotationProps) {
     dispatch(hideForm());
   }
 
-  console.log({ annotationStyle });
+  function onMouseEnter() {
+    if (tool === SELECT_TOOL) {
+      setIsHover(true);
+    }
+  }
+
+  function onMouseLeave() {
+    if (tool === SELECT_TOOL) {
+      setIsHover(false);
+    }
+  }
+
   return (
     <>
       {shouldShowForm && (
@@ -74,7 +87,10 @@ function Annotation({ annotation }: AnnotationProps) {
         <p className={styles.label}>{label && label}</p>
         <button onClick={() => dispatch(showForm())}>Edit label</button>
       </div>
-      <div style={annotationStyle}></div>
+      <div
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        style={annotationStyle}></div>
     </>
   );
 }
