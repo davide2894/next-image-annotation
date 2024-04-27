@@ -4,10 +4,10 @@ export type AnnotationType = {
   label: string;
   editing: boolean;
   shapeData: {
-    x?: number;
-    y?: number;
-    width?: number;
-    height?: number;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
     centerX?: number;
     centerY?: number;
     radius?: number;
