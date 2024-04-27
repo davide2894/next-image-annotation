@@ -4,6 +4,10 @@ import { AnnotationType } from "../../lib/types";
 import { useState } from "react";
 import Annotation from "../annotation/Annotation";
 import { RECTANGLE, CIRCLE, IMG } from "@/lib/constants";
+import { useDispatch } from "react-redux";
+import { showForm } from "@/lib/store/features/form/FormSlice";
+import { useAppSelector } from "@/lib/store/store";
+import { disableDrawing } from "@/lib/store/features/canvas/CanvasSlice";
 
 interface CanvasProps {
   image: File;
@@ -23,14 +27,15 @@ function Canvas({ image, tool }: CanvasProps) {
     0, 0,
   ]);
   const [endPosition, setEndPosition] = useState<CoordinatePoint>([0, 0]);
-  const [isDrawing, setIsDrawing] = useState(false);
   const [initialClickPosition, setInitialClickPosition] = useState<{
     x: number;
     y: number;
   } | null>(null);
+  const isDrawing = useAppSelector((state) => state.canvasReducer.isDrawing);
+  const dispatch = useDispatch();
 
   function onCanvasMouseDown(evt: React.MouseEvent<HTMLDivElement>) {
-    if (tool === RECTANGLE || tool === CIRCLE) {
+    if ((isDrawing && tool === RECTANGLE) || tool === CIRCLE) {
       const x = evt.nativeEvent.offsetX;
       const y = evt.nativeEvent.offsetY;
       const newAnnotation = {
@@ -81,11 +86,11 @@ function Canvas({ image, tool }: CanvasProps) {
 
   function onCanvasMouseUp() {
     if (drawingAnnotation) {
-      drawingAnnotation.isNew = true;
       const updatedAnnotations = [...annotations, drawingAnnotation];
       setAnnotations(updatedAnnotations);
       setDrawingAnnotation(null);
-      setIsDrawing(false);
+      dispatch(disableDrawing());
+      dispatch(showForm());
     }
   }
 

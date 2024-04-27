@@ -4,13 +4,17 @@ import Form from "../form/Form";
 import { useState } from "react";
 import Modal from "../modal/Modal";
 import styles from "./Annotation.module.css";
+import { useAppSelector } from "@/lib/store/store";
+import { hideForm } from "@/lib/store/features/form/FormSlice";
+import { useDispatch } from "react-redux";
 interface AnnotationProps {
   annotation: AnnotationType;
 }
 
 function Annotation({ annotation }: AnnotationProps) {
-  const [showForm, setShowForm] = useState(false);
   const [label, setLabel] = useState("");
+  const showForm = useAppSelector((state) => state.formReducer.show);
+  const dispatch = useDispatch();
   console.log({ annotation });
   const { x, y, width, height } = annotation.shapeData;
   let annotationStyle;
@@ -55,14 +59,14 @@ function Annotation({ annotation }: AnnotationProps) {
 
   function onFormSubmit(submittedLabel: string) {
     setLabel(submittedLabel);
-    setShowForm(false);
+    dispatch(hideForm());
   }
 
   console.log({ annotationStyle });
   return (
     <>
       {showForm && (
-        <Modal heading="Annotation" onClose={() => setShowForm(false)}>
+        <Modal heading="Annotation" onClose={() => dispatch(hideForm())}>
           <Form onFormSubmit={onFormSubmit} />
         </Modal>
       )}

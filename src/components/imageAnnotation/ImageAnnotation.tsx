@@ -4,10 +4,13 @@ import Canvas from "../canvas/Canvas";
 import Toolbar from "../toolbar/Toolbar";
 import styles from "./ImageAnnotation.module.css";
 import ImageUploadInput from "../imageUploadInput/ImageUploadInput";
+import { useDispatch } from "react-redux";
+import { enableDrawing } from "@/lib/store/features/canvas/CanvasSlice";
 
 function ImageAnnotation() {
   const [image, setImage] = useState<File | null>(null);
   const [tool, setTool] = useState("");
+  const dispatch = useDispatch();
 
   function handleImageUpload(evt: React.ChangeEvent<HTMLInputElement>) {
     const file = evt.target.files?.[0];
@@ -18,6 +21,7 @@ function ImageAnnotation() {
 
   function onToolButtonClick(toolString: string) {
     setTool(toolString);
+    dispatch(enableDrawing());
   }
 
   return (
