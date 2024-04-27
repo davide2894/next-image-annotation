@@ -24,40 +24,47 @@ function Canvas({ image, tool }: CanvasProps) {
   ]);
   const [endPosition, setEndPosition] = useState<CoordinatePoint>([0, 0]);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [initialClickPosition, setInitialClickPosition] = useState<{
+    x: number;
+    y: number;
+  } | null>(null);
 
   function onCanvasMouseDown(evt: React.MouseEvent<HTMLDivElement>) {
     if (tool === RECTANGLE || tool === CIRCLE) {
-      const rect = evt.currentTarget.getBoundingClientRect();
-      const x = (evt.clientX - rect.left) / rect.width;
-      const y = (evt.clientY - rect.top) / rect.height;
+      const x = evt.nativeEvent.offsetX;
+      const y = evt.nativeEvent.offsetY;
       const newAnnotation = {
         id: annotations.length + 1,
-        shapeType: tool === RECTANGLE ? "rectangle" : "circle",
+        shapeType: tool === "rectangle" ? "rectangle" : "circle",
         shapeData: {
-          x,
-          y,
-          width: 0,
-          height: 0,
+          x: x / IMG.WIDTH,
+          y: y / IMG.HEIGHT,
+          width: 0.2,
+          height: 0.2,
         },
-        // tool === RECTANGLE
-        //   ? { x, y, width: 0.1, height: 0 }
-        //   : { centerX: x, centerY: y, radius: 0.05 },
-        label: "New Annotation",
+        // : {
+        //     centerX: x / image.width,
+        //     centerY: y / image.height,
+        //     radius: 0,
+        //   },
+        label: "",
         editing: false,
+        showLabelForm: false,
+        isNew: true,
       };
+      setInitialClickPosition({ x, y });
       setDrawingAnnotation(newAnnotation);
     }
   }
 
   function onCanvasMouseMove(evt: React.MouseEvent<HTMLDivElement>) {
     if (drawingAnnotation) {
-      const rect = evt.currentTarget.getBoundingClientRect();
-      const x = (evt.clientX - rect.left) / rect.width;
-      const y = (evt.clientY - rect.top) / rect.height;
+      const x = evt.nativeEvent.offsetX;
+      const y = evt.nativeEvent.offsetY;
       const newShapeData = { ...drawingAnnotation.shapeData };
       if (drawingAnnotation.shapeType === "rectangle") {
-        newShapeData.width = x - drawingAnnotation.shapeData.x;
-        newShapeData.height = y - drawingAnnotation.shapeData.y;
+        newShapeData.width = (x - initialClickPosition!.x) / IMG.WIDTH;
+        newShapeData.height = (y - initialClickPosition!.y) / IMG.HEIGHT;
       } else {
         // newShapeData.radius = Math.sqrt(
         //   Math.pow(x - drawingAnnotation.shapeData.centerX, 2) +
@@ -74,9 +81,11 @@ function Canvas({ image, tool }: CanvasProps) {
 
   function onCanvasMouseUp() {
     if (drawingAnnotation) {
+      drawingAnnotation.isNew = true;
       const updatedAnnotations = [...annotations, drawingAnnotation];
       setAnnotations(updatedAnnotations);
       setDrawingAnnotation(null);
+      setIsDrawing(false);
     }
   }
 

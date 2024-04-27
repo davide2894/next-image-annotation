@@ -1,10 +1,16 @@
 import { AnnotationType } from "@/lib/types";
 import { RECTANGLE } from "@/lib/constants";
+import Form from "../form/Form";
+import { useState } from "react";
+import Modal from "../modal/Modal";
+import styles from "./Annotation.module.css";
 interface AnnotationProps {
   annotation: AnnotationType;
 }
 
 function Annotation({ annotation }: AnnotationProps) {
+  const [showForm, setShowForm] = useState(false);
+  const [label, setLabel] = useState("");
   console.log({ annotation });
   const { x, y, width, height } = annotation.shapeData;
   let annotationStyle;
@@ -12,7 +18,7 @@ function Annotation({ annotation }: AnnotationProps) {
     position: "absolute" as "absolute",
     border: "2px solid blue",
     backgroundColor: "blue",
-    opacity: 0.5,
+    opacity: 0.2,
   };
 
   if (annotation.shapeType === RECTANGLE) {
@@ -47,8 +53,25 @@ function Annotation({ annotation }: AnnotationProps) {
     };
   }
 
+  function onFormSubmit(submittedLabel: string) {
+    setLabel(submittedLabel);
+    setShowForm(false);
+  }
+
   console.log({ annotationStyle });
-  return <div style={annotationStyle}></div>;
+  return (
+    <>
+      {showForm && (
+        <Modal heading="Annotation" onClose={() => setShowForm(false)}>
+          <Form onFormSubmit={onFormSubmit} />
+        </Modal>
+      )}
+      <div className={styles.labelContainer}>
+        <p className={styles.label}>{label && label}</p>
+      </div>
+      <div style={annotationStyle}></div>
+    </>
+  );
 }
 
 export default Annotation;
