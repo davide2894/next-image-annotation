@@ -1,9 +1,10 @@
 import Image from "next/image";
 import styles from "./Canvas.module.css";
-import { AnnotationType } from "../../types";
+import { AnnotationType } from "../../lib/types";
 import { useState } from "react";
-import { normalizeCoordinates } from "../lib/normalizeData";
+import { normalizeCoordinates } from "../../lib/normalizeData";
 import Annotation from "../annotation/Annotation";
+import { RECTANGLE, CIRCLE, IMG } from "@/lib/constants";
 
 interface CanvasProps {
   image: File;
@@ -15,104 +16,86 @@ type YCoordinate = number;
 
 type CoordinatePoint = [XCoordinate, YCoordinate];
 
-const RECTANGLE = "rectangle";
-const CIRCLE = "circle";
-const EDIT = "edit";
-const IMG = {
-  WIDTH: 600,
-  HEIGHT: 600,
-};
-
 function Canvas({ image, tool }: CanvasProps) {
   const [annotations, setAnnotations] = useState<AnnotationType[]>([]);
   const [drawingAnnotation, setDrawingAnnotation] =
     useState<AnnotationType | null>(null);
-  const [startPosition, setStartPosition] = useState<CoordinatePoint>([0, 0]);
+  const [startingPosition, setStartingPosition] = useState<CoordinatePoint>([
+    0, 0,
+  ]);
   const [endPosition, setEndPosition] = useState<CoordinatePoint>([0, 0]);
+  const [isDrawing, setIsDrawing] = useState(false);
 
   function onCanvasMouseDown(evt: React.MouseEvent<HTMLDivElement>) {
     if (tool === RECTANGLE || tool === CIRCLE) {
-      const { offsetX, offsetY } = evt.nativeEvent;
-      const normalizedCoordinatePoint = normalizeCoordinates(
-        offsetX,
-        offsetY,
-        IMG.WIDTH,
-        IMG.HEIGHT
-      );
-      const [x, y] = normalizedCoordinatePoint;
-      let newAnnotation: AnnotationType = {};
-
-      if (tool === "rectangle") {
-        newAnnotation = {
-          id: annotations.length + 1,
-          shapeType: "rectangle",
-          shapeData: {
-            x,
-            y,
-            width: 0.1,
-            height: 0.1,
-          },
-          label: "",
-          editing: false,
-        };
-      } else if (tool === "circle") {
-        const centerX = x;
-        const centerY = y;
-        const radius = Math.sqrt(Math.pow(0.1, 2) + Math.pow(0.1, 2)) / 2;
-        newAnnotation = {
-          id: annotations.length + 1,
-          shapeType: "circle",
-          shapeData: { centerX, centerY, radius },
-          label: "",
-          editing: false,
-        };
-      }
-      setDrawingAnnotation(newAnnotation);
+      const x = evt.nativeEvent.offsetX / evt.currentTarget.clientWidth;
+      const y = evt.nativeEvent.offsetY / evt.currentTarget.clientHeight;
+      console.log({
+        x,
+        y,
+        offsetX: evt.nativeEvent.offsetX,
+        offsetY: evt.nativeEvent.offsetY,
+      });
+      setStartingPosition([x, y]);
+      setIsDrawing(true);
     }
   }
 
   function onCanvasMouseMove(evt: React.MouseEvent<HTMLDivElement>) {
-    let updatedAnnotation: AnnotationType;
-
-    if (drawingAnnotation && (tool === RECTANGLE || tool === CIRCLE)) {
-      const { offsetX, offsetY } = evt.nativeEvent;
-      const normalizedCoordinatePoint = normalizeCoordinates(
-        offsetX,
-        offsetY,
+    if (isDrawing && (tool === RECTANGLE || tool === CIRCLE)) {
+      const [startX, startY] = startingPosition;
+      const currentX = evt.nativeEvent.offsetX / evt.currentTarget.clientWidth;
+      const currentY = evt.nativeEvent.offsetY / evt.currentTarget.clientHeight;
+      const [normalizedStartX, normalizedStartY] = normalizeCoordinates(
+        startX,
+        startY,
         IMG.WIDTH,
         IMG.HEIGHT
       );
-      const [x1, y1] = startPosition;
-      const [x2, y2] = normalizedCoordinatePoint;
-      const width = Math.abs(x2 - x1);
-      const height = Math.abs(y2 - y1);
+      const [normalizedCurrentX, normalizedCurrentY] = normalizeCoordinates(
+        currentX,
+        currentY,
+        IMG.WIDTH,
+        IMG.HEIGHT
+      );
+
+      console.log({
+        normalizedStartX,
+        normalizedStartY,
+        normalizedCurrentX,
+        normalizedCurrentY,
+      });
+
+      const normalizedWidth = Math.abs(normalizedCurrentX - normalizedStartX);
+      const normalizedHeight = Math.abs(normalizedCurrentY - normalizedStartY);
 
       if (tool === "rectangle") {
-        updatedAnnotation = {
+        let updatedAnnotation = {
           id: annotations.length + 1,
           shapeType: "rectangle",
           shapeData: {
-            x: Math.min(x1, x2),
-            y: Math.min(y1, y2),
-            width,
-            height,
+            x: Math.min(normalizedStartX, normalizedCurrentX),
+            y: Math.min(normalizedStartY, normalizedCurrentY),
+            normalizedWidth,
+            normalizedHeight,
           },
           label: "",
           editing: false,
         };
+        setDrawingAnnotation(updatedAnnotation);
       } else if (tool === "circle") {
-        const centerX = (x1 + x2) / 2;
-        const centerY = (y1 + y2) / 2;
-        const radius = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) / 2;
-        updatedAnnotation = {
-          id: annotations.length + 1,
-          shapeType: "circle",
-          shapeData: { centerX, centerY, radius },
-          label: "",
-          editing: false,
-        };
+        // const centerX = (x1 + x2) / ;
+        // const centerY = (y1 + y2) / 2;
+        // const radius = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) / 2;
+        // let updatedAnnotation = {
+        //   id: annotations.length + 1,
+        //   shapeType: "circle",
+        //   shapeData: { centerX, centerY, radius },
+        //   label: "",
+        //   editing: false,2
+        // };
+        // setDrawingAnnotation(updatedAnnotation);
       }
-      setDrawingAnnotation(updatedAnnotation);
     }
   }
 
@@ -121,6 +104,7 @@ function Canvas({ image, tool }: CanvasProps) {
       setAnnotations([...annotations, drawingAnnotation]);
       setDrawingAnnotation(null);
     }
+    setIsDrawing(false);
   }
 
   return (

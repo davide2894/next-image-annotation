@@ -3,6 +3,7 @@ import { useState } from "react";
 import Canvas from "../canvas/Canvas";
 import Toolbar from "../toolbar/Toolbar";
 import styles from "./ImageAnnotation.module.css";
+import ImageUploadInput from "../imageUploadInput/ImageUploadInput";
 
 function ImageAnnotation() {
   const [image, setImage] = useState<File | null>(null);
@@ -27,10 +28,7 @@ function ImageAnnotation() {
           <Toolbar onToolButtonClick={onToolButtonClick} />
         </>
       ) : (
-        <>
-          <p>Upload an image to start annotation</p>
-          <input type="file" accept="image" onChange={handleImageUpload} />
-        </>
+        <ImageUploadInput handleImageUpload={handleImageUpload} />
       )}
     </div>
   );
