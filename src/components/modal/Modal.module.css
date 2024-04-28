@@ -13,3 +13,14 @@
   background-color: transparent;
   backdrop-filter: blur(4px);
 }
+
+.contentContainer {
+  margin-top: 60px;
+  padding: 40px;
+  background: lightgray;
+}
+
+.heading {
+  text-align: center;
+  margin-bottom: 10px;
+}

@@ -27,23 +27,18 @@ function Modal({ onClose, children, heading }: ModalProps) {
 
   return (
     <div
-      //   className="modal modalOverlay absolute top-0 bottom-0 left-0 right-0 bg-transparent backdrop-blur-md z-10 flex flex-col items-center"
       className={styles.modal}
       onClick={(evt) => closeModalOnClickOutside(evt)}>
-      <button
-        className="absolute top-0 right-0 w-[55px] h-[55px]"
-        onClick={onClose}>
-        <span className="block w-[25px] h-[25px] bg-no-repeat bg-center bg-contain bg-[url('../../public/close-button.svg')]"></span>
+      <button onClick={onClose}>
+        <span className=""></span>
       </button>
       <div
-        className="p-5 m-14  bg-gray-700 rounded max-w-[960px]"
+        className={styles.contentContainer}
         onClick={(evt) => {
           evt.stopPropagation();
         }}>
-        <div>
-          <h2>{heading}</h2>
-          {children}
-        </div>
+        <h2 className={styles.heading}>{heading}</h2>
+        {children}
       </div>
     </div>
   );
