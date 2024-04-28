@@ -1,5 +1,5 @@
 .toolbar {
-  min-width: 60px;
+  width: 140px;
   padding: 10px;
   border: 1px solid black;
   background-color: var(--wild-sand);
