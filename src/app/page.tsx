@@ -4,11 +4,9 @@ import styles from "./page.module.css";
 export default function Home() {
   return (
     <main className={styles.main}>
-      <Link className={styles.link} href="solution-built-with-libraries">
-        Solution that uses libraries
-      </Link>
-      <Link className={styles.link} href="solution-built-from-scratch">
-        Solution built from scratch
+      <p>Next Image Annotation</p>
+      <Link className={styles.link} href="image-annotation">
+        Start here
       </Link>
     </main>
   );

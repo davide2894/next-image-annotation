@@ -3,7 +3,7 @@ import ImageAnnotation from "@/components/imageAnnotation/ImageAnnotation";
 import { store } from "@/lib/store/store";
 import { Provider } from "react-redux";
 
-function FromScratchPage() {
+function ImageAnnotationPage() {
   return (
     <Provider store={store}>
       <ImageAnnotation />
@@ -11,4 +11,4 @@ function FromScratchPage() {
   );
 }
 
-export default FromScratchPage;
+export default ImageAnnotationPage;
