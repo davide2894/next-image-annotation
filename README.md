@@ -1,36 +1,25 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Next Image Annotation
+
+Minimalistic Image Annotation tool for the web
+
+## Technologies used
+
+Here are the technologies being used
+
+- [Next.js](https://nextjs.org/) as the core framework
+- [React](https://react.dev/) as the rendering library
+- [React DOM](https://github.com/facebook/react/tree/main/packages/react-dom): this is the `React` package that acts as a bridge between `React` itself and the `DOM`, so it makes possibile to render `React` components into a web page's [DOM](https://www.w3.org/TR/WD-DOM/introduction.html) by using `React`'s own `virtual DOM` and diffing algorithm
+- [Redux Tooklit](https://redux-toolkit.js.org/) as the main tool to store a global state object across the entire application
+- [Typescript](https://www.typescriptlang.org/) as the safety layer above JavaScript, to ensure less errors during development
+- [Css modules](https://github.com/css-modules/css-modules) as the main tool to develop modular style with unique component-centered classes
+
+This project uses [react-rnd](https://github.com/bokuweb/react-rnd) to integrate drag and resize functionalities
 
 ## Getting Started
 
-First, run the development server:
+1. Run `npm i`to install all the dependencies
+2. Once installted, you can run `npm run dev` to start the local server on `http://localhost`. The default port used will be 3000, otherwise another if it is already occupied by another process
+3. Other useful commands:
+   - create a production build (useful to check for any error before creating a commit): `npm run build`
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
