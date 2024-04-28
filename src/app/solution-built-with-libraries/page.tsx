@@ -1,5 +1,5 @@
 "use client";
-import ImageUploadInput from "@/components/imageUploadInput/ImageUploadInput";
+import ImageUploader from "@/components/imageUploader/ImageUploader";
 import Toolbar from "@/components/toolbar/Toolbar";
 import { IMG } from "@/lib/constants";
 import { Annotorious, ImageAnnotator } from "@annotorious/react";
@@ -40,7 +40,7 @@ function WithLibrariesPage() {
           <Toolbar onToolButtonClick={onToolButtonClick} />
         </>
       ) : (
-        <ImageUploadInput handleImageUpload={handleImageUpload} />
+        <ImageUploader handleImageUpload={handleImageUpload} />
       )}
     </div>
   );

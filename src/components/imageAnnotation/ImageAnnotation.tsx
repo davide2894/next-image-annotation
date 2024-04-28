@@ -2,9 +2,9 @@
 import { useState } from "react";
 import Canvas from "../canvas/Canvas";
 import styles from "./ImageAnnotation.module.css";
-import ImageUploadInput from "../imageUploadInput/ImageUploadInput";
 import { useDispatch } from "react-redux";
 import { enableDrawing } from "@/lib/store/features/canvas/canvasSlice";
+import ImageUploader from "../imageUploader/ImageUploader";
 import Toolbar from "../toolbar/Toolbar";
 
 function ImageAnnotation() {
@@ -32,7 +32,7 @@ function ImageAnnotation() {
           <Toolbar />
         </>
       ) : (
-        <ImageUploadInput handleImageUpload={handleImageUpload} />
+        <ImageUploader handleImageUpload={handleImageUpload} />
       )}
     </div>
   );
