@@ -15,6 +15,7 @@ export type AnnotationType = {
   };
 };
 
+//@TODO: refactor: use this type for tool in all of the app
 export type Tool = "rectangle" | "circle" | "select";
 
 //TODO: to use after refactor

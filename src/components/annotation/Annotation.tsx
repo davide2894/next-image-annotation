@@ -5,8 +5,11 @@ import { useState } from "react";
 import Modal from "../modal/Modal";
 import styles from "./Annotation.module.css";
 import { useAppSelector } from "@/lib/store/store";
-import { hideForm, showForm } from "@/lib/store/features/form/FormSlice";
+import { hideForm, showForm } from "@/lib/store/features/form/formSlice";
 import { useDispatch } from "react-redux";
+import { toggleEditingMode } from "@/lib/store/features/annotation/annotationSlice";
+import { Rnd } from "react-rnd";
+
 interface AnnotationProps {
   annotation: AnnotationType;
 }
@@ -76,13 +79,13 @@ function Annotation({ annotation }: AnnotationProps) {
     }
   }
 
-  return (
+  function onMouseClick() {
+    console.log("editing");
+    dispatch(toggleEditingMode(annotation.id));
+  }
+
+  const annotationContent = () => (
     <>
-      {shouldShowForm && (
-        <Modal heading="Annotation" onClose={() => dispatch(hideForm())}>
-          <Form onFormSubmit={onFormSubmit} />
-        </Modal>
-      )}
       <div className={styles.labelContainer}>
         <p className={styles.label}>{label && label}</p>
         <button onClick={() => dispatch(showForm())}>Edit label</button>
@@ -90,7 +93,45 @@ function Annotation({ annotation }: AnnotationProps) {
       <div
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
-        style={annotationStyle}></div>
+        onClick={onMouseClick}
+        style={annotationStyle}>
+        <div className={styles.moveHandle}>move around</div>
+        <div className={styles.resizeHandle}>resize</div>
+      </div>
+    </>
+  );
+
+  return (
+    <>
+      {shouldShowForm && (
+        <Modal heading="Annotation" onClose={() => dispatch(hideForm())}>
+          <Form onFormSubmit={onFormSubmit} />
+        </Modal>
+      )}
+      {annotation.isEditing ? (
+        // <Draggable handle="strong">
+        //   <Resizable width={200} height={200}>
+        //     <div>
+        //       <strong className="cursor">
+        //         <div>Drag here</div>
+        //       </strong>
+        //       {annotationContent()}
+        //     </div>
+        //   </Resizable>
+        // </Draggable>
+        <Rnd>
+          <div>
+            <strong className="cursor">
+              <div>Drag here</div>
+            </strong>
+            {annotationContent()}
+          </div>
+        </Rnd>
+      ) : (
+        // <Resizable>
+        // </Resizable>
+        annotationContent()
+      )}
     </>
   );
 }

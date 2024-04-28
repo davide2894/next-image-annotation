@@ -3,7 +3,7 @@ import styles from "./Toolbar.module.css";
 import {
   enableDrawing,
   setTool,
-} from "@/lib/store/features/canvas/CanvasSlice";
+} from "@/lib/store/features/canvas/canvasSlice";
 import { SELECT_TOOL } from "@/lib/constants";
 
 function Toolbar() {

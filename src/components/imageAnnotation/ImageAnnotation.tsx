@@ -4,7 +4,7 @@ import Canvas from "../canvas/Canvas";
 import styles from "./ImageAnnotation.module.css";
 import ImageUploadInput from "../imageUploadInput/ImageUploadInput";
 import { useDispatch } from "react-redux";
-import { enableDrawing } from "@/lib/store/features/canvas/CanvasSlice";
+import { enableDrawing } from "@/lib/store/features/canvas/canvasSlice";
 import Toolbar from "../toolbar/Toolbar";
 
 function ImageAnnotation() {

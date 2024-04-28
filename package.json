@@ -9,12 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@annotorious/react": "^3.0.0-rc.23",
     "@reduxjs/toolkit": "^2.2.3",
     "next": "14.2.3",
-    "react": "^18",
+    "react": "^18.3.1",
     "react-dom": "^18",
-    "react-redux": "^9.1.1"
+    "react-redux": "^9.1.1",
+    "react-rnd": "^10.4.10"
   },
   "devDependencies": {
     "@types/node": "^20",

@@ -1,15 +1,25 @@
 import { configureStore } from "@reduxjs/toolkit";
-import formReducer from "./features/form/FormSlice";
-import canvasReducer from "./features/canvas/CanvasSlice";
+import formReducer from "./features/form/formSlice";
+import canvasReducer from "./features/canvas/canvasSlice";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
+import annotationReducer from "./features/annotation/annotationSlice";
+
+const logger = (store: any) => (next: any) => (action: any) => {
+  console.log("middleware --> dispatching", action);
+  console.log(action.payload);
+  let result = next(action);
+  console.log("middleware --> next state", store.getState());
+  return result;
+};
 
 export const store = configureStore({
   reducer: {
     formReducer,
     canvasReducer,
+    annotationReducer,
   },
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware().concat();
+    return getDefaultMiddleware().concat(logger);
   },
 });
 

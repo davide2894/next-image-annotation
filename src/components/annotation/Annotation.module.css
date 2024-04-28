@@ -11,3 +11,10 @@
   color: green;
   font-weight: bold;
 }
+
+.moveHandle {
+  color: black;
+}
+.resizeHandle {
+  color: black;
+}
