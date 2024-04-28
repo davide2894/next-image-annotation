@@ -1,8 +1,5 @@
 import { SELECT_TOOL } from "@/lib/constants";
-import {
-  setTool,
-  enableDrawing,
-} from "@/lib/store/features/canvas/canvasSlice";
+import { setTool, enableDrawing } from "@/lib/store/features/canvas/canvaSlice";
 import { useAppSelector } from "@/lib/store/store";
 import { Tool } from "@/lib/types";
 import { useDispatch } from "react-redux";

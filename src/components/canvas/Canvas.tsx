@@ -7,7 +7,7 @@ import { RECTANGLE_TOOL, CIRCLE_TOOL, IMG } from "@/lib/constants";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "@/lib/store/store";
 import { addAnnotation } from "@/lib/store/features/annotation/annotationSlice";
-import { resetToolBar } from "@/lib/store/features/canvas/canvasSlice";
+import { resetToolBar } from "@/lib/store/features/canvas/canvaSlice";
 
 interface CanvasProps {
   image: File;

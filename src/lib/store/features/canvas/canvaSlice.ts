@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const canvasSlice = createSlice({
-  name: "canvasSlice",
+export const canvaSlice = createSlice({
+  name: "canvaSlice",
   initialState: {
     isDrawing: false,
     tool: "",
@@ -24,6 +24,6 @@ export const canvasSlice = createSlice({
 });
 
 export const { enableDrawing, disableDrawing, setTool, resetToolBar } =
-  canvasSlice.actions;
+  canvaSlice.actions;
 
-export default canvasSlice.reducer;
+export default canvaSlice.reducer;

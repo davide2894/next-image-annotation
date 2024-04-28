@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import canvasReducer from "./features/canvas/canvasSlice";
+import canvasReducer from "./features/canvas/canvaSlice";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
 import annotationReducer from "./features/annotation/annotationSlice";
 
