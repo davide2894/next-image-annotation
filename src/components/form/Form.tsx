@@ -21,19 +21,21 @@ function Form({ onFormSubmit }: FormProps) {
           <label htmlFor="nameInput">
             Label:
             <input
+              className={styles.input}
               autoFocus={true}
               type="text"
               name="name"
               required
               id="nameInput"
               value={value}
+              placeholder="Type name for annotation..."
               onChange={(evt) => {
                 setValue(evt.target.value);
               }}
             />
           </label>
         </div>
-        <button type="submit" value="submit" className={styles.button}>
+        <button type="submit" value="submit" className={styles.submitButton}>
           Submit
         </button>
       </form>
