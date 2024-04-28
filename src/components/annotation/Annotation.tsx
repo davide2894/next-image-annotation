@@ -5,10 +5,11 @@ import { useState } from "react";
 import Modal from "../modal/Modal";
 import styles from "./Annotation.module.css";
 import { useAppSelector } from "@/lib/store/store";
-import { hideForm, showForm } from "@/lib/store/features/form/formSlice";
 import { useDispatch } from "react-redux";
 import {
   enableEditingMode,
+  hideAnnotationForm,
+  showAnnotationForm,
   updateAnnotationPosition,
   updateAnnotionDimension,
   updatedAnnotationLabel,
@@ -20,13 +21,10 @@ interface AnnotationProps {
 }
 
 function Annotation({ annotation }: AnnotationProps) {
-  const [label, setLabel] = useState("");
   const [isHover, setIsHover] = useState(false);
   const { x, y, width, height } = annotation.shapeData;
-  const shouldShowForm = useAppSelector((state) => state.formReducer.show);
   const tool = useAppSelector((state) => state.canvasReducer.tool);
   const dispatch = useDispatch();
-  console.log({ annotation });
   let annotationStyle;
   let annotationBaseStyle = {
     position: "absolute" as "absolute", //TODO: refactor cause it's ugly
@@ -66,7 +64,7 @@ function Annotation({ annotation }: AnnotationProps) {
 
   function onFormSubmit(updatedLabel: string) {
     dispatch(updatedAnnotationLabel({ updatedLabel, id: annotation.id }));
-    dispatch(hideForm());
+    dispatch(hideAnnotationForm(annotation.id));
   }
 
   function onMouseEnter() {
@@ -84,40 +82,6 @@ function Annotation({ annotation }: AnnotationProps) {
   function onMouseClick() {
     console.log("editing");
     dispatch(enableEditingMode(annotation.id));
-  }
-
-  const annotationContent = () => (
-    <>
-      <div className={styles.labelContainer}>
-        <p className={styles.label}>{label && label}</p>
-        <button onClick={() => dispatch(showForm())}>Edit label</button>
-      </div>
-      <div
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
-        onClick={onMouseClick}
-        className={`${styles.annotationContainer} ${
-          isHover ? styles.annotationHover : ""
-        }`}></div>
-    </>
-  );
-
-  function renderEditableAnnotation() {
-    return (
-      <>
-        <div className={styles.labelContainer}>
-          <p className={styles.label}>{label && label}</p>
-          <button onClick={() => dispatch(showForm())}>Edit label</button>
-        </div>
-        <div
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          onClick={onMouseClick}
-          className={`${styles.annotationContainer} ${
-            isHover ? styles.annotationHover : ""
-          }`}></div>
-      </>
-    );
   }
 
   function onDragStop(e: any, d: any) {
@@ -146,8 +110,10 @@ function Annotation({ annotation }: AnnotationProps) {
 
   return (
     <>
-      {shouldShowForm && (
-        <Modal heading="Annotation" onClose={() => dispatch(hideForm())}>
+      {annotation.showForm && (
+        <Modal
+          heading="Annotation"
+          onClose={() => dispatch(hideAnnotationForm(annotation.id))}>
           <Form onFormSubmit={onFormSubmit} />
         </Modal>
       )}
@@ -164,7 +130,19 @@ function Annotation({ annotation }: AnnotationProps) {
           width,
           height,
         }}>
-        {renderEditableAnnotation()}
+        <div className={styles.labelContainer}>
+          <p className={styles.label}>{annotation.label}</p>
+          <button onClick={() => dispatch(showAnnotationForm(annotation.id))}>
+            Edit label
+          </button>
+        </div>
+        <div
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+          onClick={onMouseClick}
+          className={`${styles.annotationContainer} ${
+            isHover ? styles.annotationHover : ""
+          }`}></div>
       </Rnd>
     </>
   );

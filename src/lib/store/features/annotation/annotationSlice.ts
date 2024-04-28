@@ -52,6 +52,18 @@ export const annotationSlice = createSlice({
         targetAnnotation.shapeData.height = action.payload.height;
       }
     },
+    hideAnnotationForm: (state, action) => {
+      const targetAnnotation = getAnnotationToUpdate(state, action.payload);
+      if (targetAnnotation) {
+        targetAnnotation.showForm = false;
+      }
+    },
+    showAnnotationForm: (state, action) => {
+      const targetAnnotation = getAnnotationToUpdate(state, action.payload);
+      if (targetAnnotation) {
+        targetAnnotation.showForm = true;
+      }
+    },
   },
 });
 
@@ -62,5 +74,7 @@ export const {
   updatedAnnotationLabel,
   updateAnnotationPosition,
   updateAnnotionDimension,
+  hideAnnotationForm,
+  showAnnotationForm,
 } = annotationSlice.actions;
 export default annotationSlice.reducer;

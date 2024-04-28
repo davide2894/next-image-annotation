@@ -5,7 +5,6 @@ import { AnnotationType } from "../../lib/types";
 import { useState } from "react";
 import { RECTANGLE, CIRCLE, IMG } from "@/lib/constants";
 import { useDispatch } from "react-redux";
-import { showForm } from "@/lib/store/features/form/formSlice";
 import { useAppSelector } from "@/lib/store/store";
 import { addAnnotation } from "@/lib/store/features/annotation/annotationSlice";
 import { resetToolBar } from "@/lib/store/features/canvas/canvasSlice";
@@ -50,7 +49,7 @@ function Canvas({ image }: CanvasProps) {
         },
         label: "",
         isEditing: false,
-        isNew: true,
+        showForm: false,
       };
       setInitialClickPosition({ x, y });
       setDrawingAnnotation(newAnnotation);
@@ -82,8 +81,8 @@ function Canvas({ image }: CanvasProps) {
 
   function onCanvasMouseUp() {
     if (drawingAnnotation) {
+      drawingAnnotation.showForm = true;
       dispatch(addAnnotation(drawingAnnotation));
-      dispatch(showForm());
       setDrawingAnnotation(null);
       dispatch(resetToolBar());
     }

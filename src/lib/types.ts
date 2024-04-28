@@ -3,7 +3,7 @@ export type AnnotationType = {
   shapeType: string;
   label: string;
   isEditing: boolean;
-  isNew: boolean;
+  showForm: boolean;
   shapeData: {
     x: number;
     y: number;

@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import formReducer from "./features/form/formSlice";
 import canvasReducer from "./features/canvas/canvasSlice";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
 import annotationReducer from "./features/annotation/annotationSlice";
@@ -14,7 +13,6 @@ const logger = (store: any) => (next: any) => (action: any) => {
 
 export const store = configureStore({
   reducer: {
-    formReducer,
     canvasReducer,
     annotationReducer,
   },
