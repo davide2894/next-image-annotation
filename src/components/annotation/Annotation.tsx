@@ -166,24 +166,6 @@ function Annotation({ annotation }: AnnotationProps) {
         }}>
         {renderEditableAnnotation()}
       </Rnd>
-      {/* {tool === SELECT_TOOL && annotation.isEditing ? (
-        <Rnd
-          enableResizing={tool === SELECT_TOOL && annotation.isEditing}
-          disableDragging={tool !== SELECT_TOOL && !annotation.isEditing}
-          onDragStop={onDragStop}
-          position={{
-            x: IMG.WIDTH * x,
-            y: IMG.HEIGHT * y,
-          }}
-          size={{
-            width: `${(width ? Math.abs(width) : 0) * 100}%`,
-            height: `${(height ? Math.abs(height) : 0) * 100}%`,
-          }}>
-          {renderEditableAnnotation()}
-        </Rnd>
-      ) : (
-        <div style={annotationStyle}>{annotationContent()}</div>
-      )} */}
     </>
   );
 }
