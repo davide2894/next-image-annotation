@@ -15,6 +15,7 @@ import {
   updatedAnnotationLabel,
 } from "@/lib/store/features/annotation/annotationSlice";
 import { Rnd } from "react-rnd";
+import safeIntFromPxString from "@/lib/safeIntFromPxString";
 
 interface AnnotationProps {
   annotation: AnnotationType;
@@ -65,8 +66,8 @@ function Annotation({ annotation }: AnnotationProps) {
     console.log({ e, direction, ref, delta, position });
     dispatch(
       updateAnnotionDimension({
-        width: ref.style.width + delta.width,
-        height: ref.style.height + delta.height,
+        width: safeIntFromPxString(ref.style.width),
+        height: safeIntFromPxString(ref.style.height),
         id: annotation.id,
       })
     );
