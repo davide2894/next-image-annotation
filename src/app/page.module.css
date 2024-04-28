@@ -1,0 +1,16 @@
+.main {
+  text-align: center;
+}
+
+.link {
+  &:hover {
+    cursor: pointer;
+    font-weight: bold;
+  }
+  &:first-of-type {
+    margin-bottom: 10px;
+  }
+  font-size: 2em;
+  color: black;
+  text-decoration: underline;
+}
