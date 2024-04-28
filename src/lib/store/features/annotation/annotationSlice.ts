@@ -3,13 +3,13 @@ import { createSlice } from "@reduxjs/toolkit";
 
 let annotations: AnnotationType[] = [];
 
-// const getAnnotationToUpdate = (
-//   state: WritableDraft<{ annotations: AnnotationType[] }>,
-//   annotationID: number
-// ) =>
-//   state.annotations.find(
-//     (annotation: AnnotationType) => annotation.id === annotationID
-//   );
+const getAnnotationToUpdate = (
+  state: { annotations: AnnotationType[] },
+  annotationID: number
+) =>
+  state.annotations.find(
+    (annotation: AnnotationType) => annotation.id === annotationID
+  );
 
 export const annotationSlice = createSlice({
   name: "annotationSlice",
@@ -17,12 +17,16 @@ export const annotationSlice = createSlice({
     annotations: annotations,
   },
   reducers: {
-    toggleEditingMode: (state, action) => {
-      const targetAnnotation = state.annotations.find(
-        (annotation) => annotation.id === action.payload
-      );
+    enableEditingMode: (state, action) => {
+      const targetAnnotation = getAnnotationToUpdate(state, action.payload);
       if (targetAnnotation) {
-        targetAnnotation.isEditing = !targetAnnotation.isEditing;
+        targetAnnotation.isEditing = true;
+      }
+    },
+    disableEditingMode: (state, action) => {
+      const targetAnnotation = getAnnotationToUpdate(state, action.payload);
+      if (targetAnnotation) {
+        targetAnnotation.isEditing = false;
       }
     },
     addAnnotation: (state, action) => {
@@ -31,5 +35,6 @@ export const annotationSlice = createSlice({
   },
 });
 
-export const { toggleEditingMode, addAnnotation } = annotationSlice.actions;
+export const { enableEditingMode, disableEditingMode, addAnnotation } =
+  annotationSlice.actions;
 export default annotationSlice.reducer;

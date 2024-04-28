@@ -7,7 +7,7 @@ import styles from "./Annotation.module.css";
 import { useAppSelector } from "@/lib/store/store";
 import { hideForm, showForm } from "@/lib/store/features/form/formSlice";
 import { useDispatch } from "react-redux";
-import { toggleEditingMode } from "@/lib/store/features/annotation/annotationSlice";
+import { enableEditingMode } from "@/lib/store/features/annotation/annotationSlice";
 import { Rnd } from "react-rnd";
 
 interface AnnotationProps {
@@ -81,7 +81,7 @@ function Annotation({ annotation }: AnnotationProps) {
 
   function onMouseClick() {
     console.log("editing");
-    dispatch(toggleEditingMode(annotation.id));
+    dispatch(enableEditingMode(annotation.id));
   }
 
   const annotationContent = () => (
@@ -108,7 +108,7 @@ function Annotation({ annotation }: AnnotationProps) {
           <Form onFormSubmit={onFormSubmit} />
         </Modal>
       )}
-      {annotation.isEditing ? (
+      {tool === SELECT_TOOL && annotation.isEditing ? (
         // <Draggable handle="strong">
         //   <Resizable width={200} height={200}>
         //     <div>
@@ -128,8 +128,6 @@ function Annotation({ annotation }: AnnotationProps) {
           </div>
         </Rnd>
       ) : (
-        // <Resizable>
-        // </Resizable>
         annotationContent()
       )}
     </>
