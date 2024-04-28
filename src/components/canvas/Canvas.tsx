@@ -13,11 +13,6 @@ interface CanvasProps {
   image: File;
 }
 
-type XCoordinate = number;
-type YCoordinate = number;
-
-type CoordinatePoint = [XCoordinate, YCoordinate];
-
 function Canvas({ image }: CanvasProps) {
   const annotations = useAppSelector(
     (state) => state.annotationReducer.annotations
