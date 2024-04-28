@@ -5,9 +5,10 @@ import { useState } from "react";
 import Annotation from "../annotation/Annotation";
 import { RECTANGLE, CIRCLE, IMG } from "@/lib/constants";
 import { useDispatch } from "react-redux";
-import { showForm } from "@/lib/store/features/form/FormSlice";
+import { showForm } from "@/lib/store/features/form/formSlice";
 import { useAppSelector } from "@/lib/store/store";
-import { disableDrawing } from "@/lib/store/features/canvas/CanvasSlice";
+import { disableDrawing } from "@/lib/store/features/canvas/canvasSlice";
+import { addAnnotation } from "@/lib/store/features/annotation/annotationSlice";
 
 interface CanvasProps {
   image: File;
@@ -20,7 +21,9 @@ type CoordinatePoint = [XCoordinate, YCoordinate];
 
 function Canvas({ image }: CanvasProps) {
   // @TODO: put annotations in its own slice cause it's useful when updating single annotation based on id (copy from goalsSlice)
-  const [annotations, setAnnotations] = useState<AnnotationType[]>([]);
+  const annotations = useAppSelector(
+    (state) => state.annotationReducer.annotations
+  );
   const [drawingAnnotation, setDrawingAnnotation] =
     useState<AnnotationType | null>(null);
   const [startingPosition, setStartingPosition] = useState<CoordinatePoint>([
@@ -40,7 +43,7 @@ function Canvas({ image }: CanvasProps) {
     if (isDrawing && (tool === RECTANGLE || tool === CIRCLE)) {
       const x = evt.nativeEvent.offsetX;
       const y = evt.nativeEvent.offsetY;
-      const newAnnotation = {
+      const newAnnotation: AnnotationType = {
         id: annotations.length + 1,
         shapeType: tool === RECTANGLE ? RECTANGLE : CIRCLE,
         shapeData: {
@@ -55,8 +58,7 @@ function Canvas({ image }: CanvasProps) {
         //     radius: 0,
         //   },
         label: "",
-        editing: false,
-        showLabelForm: false,
+        isEditing: false,
         isNew: true,
       };
       setInitialClickPosition({ x, y });
@@ -88,8 +90,7 @@ function Canvas({ image }: CanvasProps) {
 
   function onCanvasMouseUp() {
     if (drawingAnnotation) {
-      const updatedAnnotations = [...annotations, drawingAnnotation];
-      setAnnotations(updatedAnnotations);
+      dispatch(addAnnotation(drawingAnnotation));
       setDrawingAnnotation(null);
       dispatch(disableDrawing());
       dispatch(showForm());

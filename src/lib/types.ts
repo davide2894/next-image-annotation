@@ -2,7 +2,7 @@ export type AnnotationType = {
   id: number;
   shapeType: string;
   label: string;
-  editing: boolean;
+  isEditing: boolean;
   isNew: boolean;
   shapeData: {
     x: number;
