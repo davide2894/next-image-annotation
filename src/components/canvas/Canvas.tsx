@@ -3,7 +3,7 @@ import styles from "./Canvas.module.css";
 import Annotation from "../annotation/Annotation";
 import { AnnotationType } from "../../lib/types";
 import { useState } from "react";
-import { RECTANGLE, CIRCLE, IMG } from "@/lib/constants";
+import { RECTANGLE_TOOL, CIRCLE_TOOL, IMG } from "@/lib/constants";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "@/lib/store/store";
 import { addAnnotation } from "@/lib/store/features/annotation/annotationSlice";
@@ -34,13 +34,12 @@ function Canvas({ image }: CanvasProps) {
 
   function onCanvasMouseDown(evt: React.MouseEvent<HTMLDivElement>) {
     evt.preventDefault();
-    // @TODO: omogeneizza tool value accross the app
-    if (isDrawing && (tool === RECTANGLE || tool === CIRCLE)) {
+    if (isDrawing && (tool === RECTANGLE_TOOL || tool === CIRCLE_TOOL)) {
       const x = evt.nativeEvent.offsetX;
       const y = evt.nativeEvent.offsetY;
       const newAnnotation: AnnotationType = {
         id: annotations.length + 1,
-        shapeType: tool === RECTANGLE ? RECTANGLE : CIRCLE,
+        shapeType: tool === RECTANGLE_TOOL ? RECTANGLE_TOOL : CIRCLE_TOOL,
         shapeData: {
           x: (x / IMG.WIDTH) * IMG.WIDTH,
           y: (y / IMG.HEIGHT) * IMG.HEIGHT,
