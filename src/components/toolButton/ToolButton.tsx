@@ -36,7 +36,6 @@ function ToolButton({ toolName, text }: ToolButtonProps) {
 
   return (
     <button
-      // disabled={activeTool ? activeTool !== SELECT_TOOL : false}
       className={`${styles.toolButton} ${
         activeTool === toolName ? styles.activeButton : ""
       }`}
