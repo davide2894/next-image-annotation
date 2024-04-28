@@ -21,6 +21,7 @@ function Form({ onFormSubmit }: FormProps) {
           <label htmlFor="nameInput">
             Label:
             <input
+              autoFocus={true}
               type="text"
               name="name"
               required

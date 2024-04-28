@@ -7,7 +7,12 @@ import styles from "./Annotation.module.css";
 import { useAppSelector } from "@/lib/store/store";
 import { hideForm, showForm } from "@/lib/store/features/form/formSlice";
 import { useDispatch } from "react-redux";
-import { enableEditingMode } from "@/lib/store/features/annotation/annotationSlice";
+import {
+  enableEditingMode,
+  updateAnnotationPosition,
+  updateAnnotionDimension,
+  updatedAnnotationLabel,
+} from "@/lib/store/features/annotation/annotationSlice";
 import { Rnd } from "react-rnd";
 
 interface AnnotationProps {
@@ -17,17 +22,14 @@ interface AnnotationProps {
 function Annotation({ annotation }: AnnotationProps) {
   const [label, setLabel] = useState("");
   const [isHover, setIsHover] = useState(false);
+  const { x, y, width, height } = annotation.shapeData;
   const shouldShowForm = useAppSelector((state) => state.formReducer.show);
   const tool = useAppSelector((state) => state.canvasReducer.tool);
   const dispatch = useDispatch();
   console.log({ annotation });
-  const { x, y, width, height } = annotation.shapeData;
   let annotationStyle;
   let annotationBaseStyle = {
     position: "absolute" as "absolute", //TODO: refactor cause it's ugly
-    border: "2px solid blue",
-    backgroundColor: `${isHover ? "yellow" : "blue"}`,
-    opacity: 0.2,
   };
 
   if (annotation.shapeType === RECTANGLE) {
@@ -62,8 +64,8 @@ function Annotation({ annotation }: AnnotationProps) {
     };
   }
 
-  function onFormSubmit(submittedLabel: string) {
-    setLabel(submittedLabel);
+  function onFormSubmit(updatedLabel: string) {
+    dispatch(updatedAnnotationLabel({ updatedLabel, id: annotation.id }));
     dispatch(hideForm());
   }
 
@@ -94,12 +96,53 @@ function Annotation({ annotation }: AnnotationProps) {
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
         onClick={onMouseClick}
-        style={annotationStyle}>
-        <div className={styles.moveHandle}>move around</div>
-        <div className={styles.resizeHandle}>resize</div>
-      </div>
+        className={`${styles.annotationContainer} ${
+          isHover ? styles.annotationHover : ""
+        }`}></div>
     </>
   );
+
+  function renderEditableAnnotation() {
+    return (
+      <>
+        <div className={styles.labelContainer}>
+          <p className={styles.label}>{label && label}</p>
+          <button onClick={() => dispatch(showForm())}>Edit label</button>
+        </div>
+        <div
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+          onClick={onMouseClick}
+          className={`${styles.annotationContainer} ${
+            isHover ? styles.annotationHover : ""
+          }`}></div>
+      </>
+    );
+  }
+
+  function onDragStop(e: any, d: any) {
+    console.log({ e, d });
+    dispatch(
+      updateAnnotationPosition({ x: d.lastX, y: d.lastY, id: annotation.id })
+    );
+  }
+
+  function onResizeStop(
+    e: any,
+    direction: any,
+    ref: { style: { width: any; height: any } },
+    delta: any,
+    position: any
+  ) {
+    console.log({ e, direction, ref, delta, position });
+    dispatch(
+      updateAnnotionDimension({
+        width: ref.style.width + delta.width,
+        height: ref.style.height + delta.height,
+        id: annotation.id,
+      })
+    );
+  }
 
   return (
     <>
@@ -108,28 +151,39 @@ function Annotation({ annotation }: AnnotationProps) {
           <Form onFormSubmit={onFormSubmit} />
         </Modal>
       )}
-      {tool === SELECT_TOOL && annotation.isEditing ? (
-        // <Draggable handle="strong">
-        //   <Resizable width={200} height={200}>
-        //     <div>
-        //       <strong className="cursor">
-        //         <div>Drag here</div>
-        //       </strong>
-        //       {annotationContent()}
-        //     </div>
-        //   </Resizable>
-        // </Draggable>
-        <Rnd>
-          <div>
-            <strong className="cursor">
-              <div>Drag here</div>
-            </strong>
-            {annotationContent()}
-          </div>
+      <Rnd
+        enableResizing={tool === SELECT_TOOL && annotation.isEditing}
+        disableDragging={tool !== SELECT_TOOL && !annotation.isEditing}
+        onDragStop={onDragStop}
+        onResize={onResizeStop}
+        position={{
+          x,
+          y,
+        }}
+        size={{
+          width,
+          height,
+        }}>
+        {renderEditableAnnotation()}
+      </Rnd>
+      {/* {tool === SELECT_TOOL && annotation.isEditing ? (
+        <Rnd
+          enableResizing={tool === SELECT_TOOL && annotation.isEditing}
+          disableDragging={tool !== SELECT_TOOL && !annotation.isEditing}
+          onDragStop={onDragStop}
+          position={{
+            x: IMG.WIDTH * x,
+            y: IMG.HEIGHT * y,
+          }}
+          size={{
+            width: `${(width ? Math.abs(width) : 0) * 100}%`,
+            height: `${(height ? Math.abs(height) : 0) * 100}%`,
+          }}>
+          {renderEditableAnnotation()}
         </Rnd>
       ) : (
-        annotationContent()
-      )}
+        <div style={annotationStyle}>{annotationContent()}</div>
+      )} */}
     </>
   );
 }

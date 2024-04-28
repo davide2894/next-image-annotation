@@ -16,8 +16,14 @@ export const canvasSlice = createSlice({
     setTool: (state, action) => {
       state.tool = action.payload;
     },
+    resetToolBar: (state) => {
+      state.tool = "";
+      state.isDrawing = false;
+    },
   },
 });
 
-export const { enableDrawing, disableDrawing, setTool } = canvasSlice.actions;
+export const { enableDrawing, disableDrawing, setTool, resetToolBar } =
+  canvasSlice.actions;
+
 export default canvasSlice.reducer;

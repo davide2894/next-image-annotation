@@ -32,9 +32,35 @@ export const annotationSlice = createSlice({
     addAnnotation: (state, action) => {
       state.annotations.push(action.payload);
     },
+    updatedAnnotationLabel: (state, action) => {
+      const targetAnnotation = getAnnotationToUpdate(state, action.payload.id);
+      if (targetAnnotation) {
+        targetAnnotation.label = action.payload.updatedLabel;
+      }
+    },
+    updateAnnotationPosition: (state, action) => {
+      const targetAnnotation = getAnnotationToUpdate(state, action.payload.id);
+      if (targetAnnotation) {
+        targetAnnotation.shapeData.x = action.payload.x;
+        targetAnnotation.shapeData.y = action.payload.y;
+      }
+    },
+    updateAnnotionDimension: (state, action) => {
+      const targetAnnotation = getAnnotationToUpdate(state, action.payload.id);
+      if (targetAnnotation) {
+        targetAnnotation.shapeData.width = action.payload.width;
+        targetAnnotation.shapeData.height = action.payload.height;
+      }
+    },
   },
 });
 
-export const { enableEditingMode, disableEditingMode, addAnnotation } =
-  annotationSlice.actions;
+export const {
+  enableEditingMode,
+  disableEditingMode,
+  addAnnotation,
+  updatedAnnotationLabel,
+  updateAnnotationPosition,
+  updateAnnotionDimension,
+} = annotationSlice.actions;
 export default annotationSlice.reducer;

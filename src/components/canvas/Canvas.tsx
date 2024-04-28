@@ -1,14 +1,14 @@
 import Image from "next/image";
 import styles from "./Canvas.module.css";
+import Annotation from "../annotation/Annotation";
 import { AnnotationType } from "../../lib/types";
 import { useState } from "react";
-import Annotation from "../annotation/Annotation";
 import { RECTANGLE, CIRCLE, IMG } from "@/lib/constants";
 import { useDispatch } from "react-redux";
 import { showForm } from "@/lib/store/features/form/formSlice";
 import { useAppSelector } from "@/lib/store/store";
-import { disableDrawing } from "@/lib/store/features/canvas/canvasSlice";
 import { addAnnotation } from "@/lib/store/features/annotation/annotationSlice";
+import { resetToolBar } from "@/lib/store/features/canvas/canvasSlice";
 
 interface CanvasProps {
   image: File;
@@ -20,16 +20,11 @@ type YCoordinate = number;
 type CoordinatePoint = [XCoordinate, YCoordinate];
 
 function Canvas({ image }: CanvasProps) {
-  // @TODO: put annotations in its own slice cause it's useful when updating single annotation based on id (copy from goalsSlice)
   const annotations = useAppSelector(
     (state) => state.annotationReducer.annotations
   );
   const [drawingAnnotation, setDrawingAnnotation] =
     useState<AnnotationType | null>(null);
-  const [startingPosition, setStartingPosition] = useState<CoordinatePoint>([
-    0, 0,
-  ]);
-  const [endPosition, setEndPosition] = useState<CoordinatePoint>([0, 0]);
   const [initialClickPosition, setInitialClickPosition] = useState<{
     x: number;
     y: number;
@@ -48,16 +43,11 @@ function Canvas({ image }: CanvasProps) {
         id: annotations.length + 1,
         shapeType: tool === RECTANGLE ? RECTANGLE : CIRCLE,
         shapeData: {
-          x: x / IMG.WIDTH,
-          y: y / IMG.HEIGHT,
-          width: 0.2,
-          height: 0.2,
+          x: (x / IMG.WIDTH) * IMG.WIDTH,
+          y: (y / IMG.HEIGHT) * IMG.HEIGHT,
+          width: 0,
+          height: 0,
         },
-        // : {
-        //     centerX: x / image.width,
-        //     centerY: y / image.height,
-        //     radius: 0,
-        //   },
         label: "",
         isEditing: false,
         isNew: true,
@@ -75,13 +65,12 @@ function Canvas({ image }: CanvasProps) {
       const y = evt.nativeEvent.offsetY;
       const newShapeData = { ...drawingAnnotation.shapeData };
       if (drawingAnnotation.shapeType === "rectangle") {
-        newShapeData.width = (x - initialClickPosition!.x) / IMG.WIDTH;
-        newShapeData.height = (y - initialClickPosition!.y) / IMG.HEIGHT;
+        newShapeData.width =
+          ((x - initialClickPosition!.x) / IMG.WIDTH) * IMG.WIDTH;
+        newShapeData.height =
+          ((y - initialClickPosition!.y) / IMG.HEIGHT) * IMG.HEIGHT;
       } else {
-        // newShapeData.radius = Math.sqrt(
-        //   Math.pow(x - drawingAnnotation.shapeData.centerX, 2) +
-        //     Math.pow(y - drawingAnnotation.shapeData.centerY, 2)
-        // );
+        // @TODO: add circle shape annotation logic
       }
       const updatedAnnotation = {
         ...drawingAnnotation,
@@ -94,9 +83,9 @@ function Canvas({ image }: CanvasProps) {
   function onCanvasMouseUp() {
     if (drawingAnnotation) {
       dispatch(addAnnotation(drawingAnnotation));
-      setDrawingAnnotation(null);
-      dispatch(disableDrawing());
       dispatch(showForm());
+      setDrawingAnnotation(null);
+      dispatch(resetToolBar());
     }
   }
 

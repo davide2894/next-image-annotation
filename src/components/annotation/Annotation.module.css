@@ -1,20 +1,21 @@
-.wrapper {
-  border: 5px solid black;
-  position: absolute;
+.annotationContainer {
+  opacity: 0.2;
+  background-color: blue;
+  width: 100%;
+  height: 100%;
+}
+
+.annotationHover {
+  background-color: yellow;
 }
 
 .labelContainer {
-  border: 1px solid black;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .label {
-  color: green;
+  color: blue;
   font-weight: bold;
-}
-
-.moveHandle {
-  color: black;
-}
-.resizeHandle {
-  color: black;
+  margin-right: 5px;
 }
