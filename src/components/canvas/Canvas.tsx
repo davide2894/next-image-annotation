@@ -39,6 +39,7 @@ function Canvas({ image }: CanvasProps) {
   const dispatch = useDispatch();
 
   function onCanvasMouseDown(evt: React.MouseEvent<HTMLDivElement>) {
+    evt.preventDefault();
     // @TODO: omogeneizza tool value accross the app
     if (isDrawing && (tool === RECTANGLE || tool === CIRCLE)) {
       const x = evt.nativeEvent.offsetX;
@@ -67,6 +68,8 @@ function Canvas({ image }: CanvasProps) {
   }
 
   function onCanvasMouseMove(evt: React.MouseEvent<HTMLDivElement>) {
+    evt.preventDefault();
+
     if (drawingAnnotation) {
       const x = evt.nativeEvent.offsetX;
       const y = evt.nativeEvent.offsetY;
