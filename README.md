@@ -23,3 +23,7 @@ This project uses [react-rnd](https://github.com/bokuweb/react-rnd) to integrate
    - create a production build (useful to check for any error before creating a commit): `npm run build`
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+
+## Note
+
+Note: this repository uses [Git Flow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
