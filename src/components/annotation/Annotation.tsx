@@ -1,5 +1,5 @@
 import { AnnotationType } from "@/lib/types";
-import { RECTANGLE, SELECT_TOOL } from "@/lib/constants";
+import { SELECT_TOOL } from "@/lib/constants";
 import Form from "../form/Form";
 import { useState } from "react";
 import Modal from "../modal/Modal";
