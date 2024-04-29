@@ -80,6 +80,7 @@ function Annotation({ annotation }: AnnotationProps) {
         </Modal>
       )}
       <Rnd
+        bounds="parent"
         enableResizing={tool === SELECT_TOOL && annotation.isEditing}
         disableDragging={tool !== SELECT_TOOL && !annotation.isEditing}
         onDragStop={onDragStop}
