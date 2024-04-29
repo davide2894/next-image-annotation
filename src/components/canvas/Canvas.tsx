@@ -57,7 +57,7 @@ function Canvas({ image }: CanvasProps) {
       const x = evt.nativeEvent.offsetX;
       const y = evt.nativeEvent.offsetY;
       const newShapeData = { ...drawingAnnotation.shapeData };
-      if (drawingAnnotation.shapeType === "rectangle") {
+      if (drawingAnnotation.shapeType === RECTANGLE_TOOL) {
         newShapeData.width =
           ((x - initialClickPosition!.x) / IMG.WIDTH) * IMG.WIDTH;
         newShapeData.height =
