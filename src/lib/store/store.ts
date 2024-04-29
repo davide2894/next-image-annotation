@@ -2,12 +2,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import canvasReducer from "./features/canvas/canvaSlice";
 import { TypedUseSelectorHook, useSelector } from "react-redux";
 import annotationReducer from "./features/annotation/annotationSlice";
+import log from "../log";
 
 const logger = (store: any) => (next: any) => (action: any) => {
-  console.log("middleware --> dispatching", action);
-  console.log(action.payload);
+  log("middleware --> dispatching", action);
+  log(action.payload);
   let result = next(action);
-  console.log("middleware --> next state", store.getState());
+  log("middleware --> next state", store.getState());
   return result;
 };
 
