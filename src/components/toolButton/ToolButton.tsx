@@ -1,4 +1,4 @@
-import { SELECT_TOOL } from "@/lib/constants";
+import { CIRCLE_TOOL, SELECT_TOOL } from "@/lib/constants";
 import { setTool, enableDrawing } from "@/lib/store/features/canvas/canvaSlice";
 import { useAppSelector } from "@/lib/store/store";
 import { Tool } from "@/lib/types";
@@ -37,7 +37,9 @@ function ToolButton({ toolName, text }: ToolButtonProps) {
         activeTool === toolName ? styles.activeButton : ""
       }`}
       onClick={() => onToolButtonClick(toolName)}>
-      {text}
+      {toolName === CIRCLE_TOOL && <p>&#9888; Work in progress &#9888;</p>}
+
+      <p>{text}</p>
     </button>
   );
 }

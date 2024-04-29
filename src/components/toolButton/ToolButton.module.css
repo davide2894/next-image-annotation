@@ -1,5 +1,7 @@
 .toolButton {
   margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
 }
 
 .activeButton {
