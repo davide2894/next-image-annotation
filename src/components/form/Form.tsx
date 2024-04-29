@@ -10,7 +10,6 @@ function Form({ onFormSubmit }: FormProps) {
 
   function submitHandler(evt: SyntheticEvent) {
     evt.preventDefault();
-    console.log(evt);
     onFormSubmit(value);
   }
 

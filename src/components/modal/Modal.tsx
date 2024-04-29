@@ -12,7 +12,6 @@ function Modal({ onClose, children, heading }: ModalProps) {
     function handleEscapeKey(event: KeyboardEvent) {
       if (event.code === "Escape") {
         onClose();
-        console.log("escape pressed");
       }
     }
     document.addEventListener("keydown", handleEscapeKey);

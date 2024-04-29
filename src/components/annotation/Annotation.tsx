@@ -45,12 +45,10 @@ function Annotation({ annotation }: AnnotationProps) {
   }
 
   function onMouseClick() {
-    console.log("editing");
     dispatch(enableEditingMode(annotation.id));
   }
 
   function onDragStop(e: any, d: any) {
-    console.log({ e, d });
     dispatch(
       updateAnnotationPosition({ x: d.lastX, y: d.lastY, id: annotation.id })
     );
@@ -63,7 +61,6 @@ function Annotation({ annotation }: AnnotationProps) {
     delta: any,
     position: any
   ) {
-    console.log({ e, direction, ref, delta, position });
     dispatch(
       updateAnnotionDimension({
         width: safeIntFromPxString(ref.style.width),
